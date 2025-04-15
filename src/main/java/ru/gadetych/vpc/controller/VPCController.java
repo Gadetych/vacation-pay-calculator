@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
 @RestController
-@RequestMapping
+@RequestMapping(produces = "application/json")
 @RequiredArgsConstructor
 @Validated
 @Slf4j
@@ -23,11 +23,12 @@ public class VPCController {
     private final VPCService service;
 
     @GetMapping("/calculate")
-    public VacationPaymentsDto calculate(@RequestParam(value = "avgSalary")
+    public VacationPaymentsDto calculate(@RequestParam(value = "avgSalary", required = false)
                                          @NotNull
                                          @Positive
                                          Double avgSalary,
-                                         @RequestParam(value = "vacationDays")
+                                         @RequestParam(value = "vacationDays", required = false)
+                                         @NotNull
                                          @Positive
                                          Integer vacationDays) {
         log.info("==> calculate: avgSalary={}, vacationDays={}", avgSalary, vacationDays);
