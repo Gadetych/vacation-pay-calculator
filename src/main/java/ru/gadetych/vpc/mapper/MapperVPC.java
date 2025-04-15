@@ -10,8 +10,7 @@ import ru.gadetych.vpc.model.VacationPayments;
 public class MapperVPC {
     public VacationPaymentsDto modelToDto(VacationPayments model) {
         log.debug("==> modelToDto model: {}", model);
-        VacationPaymentsDto dto = new VacationPaymentsDto();
-        dto.setAmount(model.getAmount());
+        VacationPaymentsDto dto = new VacationPaymentsDto(model.getAmount());
         log.debug("<== modelToDto dto: {}", dto);
         return dto;
     }

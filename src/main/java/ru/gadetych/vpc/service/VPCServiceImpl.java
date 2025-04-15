@@ -15,9 +15,8 @@ public class VPCServiceImpl implements VPCService {
     @Override
     public VacationPaymentsDto calculate(CalculationData calculationData) {
         log.debug("==> calculate: {}", calculationData);
-        double amount = calculationData.getAvgSalary() / AVERAGE_NUMBER_OF_DAYS_IN_MONTH * calculationData.getVacationDays();
-        VacationPayments vacationPayments = new VacationPayments();
-        vacationPayments.setAmount(amount);
+        double amount = (calculationData.getAvgSalary() / AVERAGE_NUMBER_OF_DAYS_IN_MONTH) * calculationData.getVacationDays();
+        VacationPayments vacationPayments = new VacationPayments(amount);
         return MapperVPC.modelToDto(vacationPayments);
     }
 }

@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
 @RestController
-@RequestMapping(produces = "application/json")
+@RequestMapping(value = "/vpc", produces = "application/json")
 @RequiredArgsConstructor
 @Validated
 @Slf4j
@@ -32,9 +32,7 @@ public class VPCController {
                                          @Positive
                                          Integer vacationDays) {
         log.info("==> calculate: avgSalary={}, vacationDays={}", avgSalary, vacationDays);
-        CalculationData calculationData = new CalculationData();
-        calculationData.setAvgSalary(avgSalary);
-        calculationData.setVacationDays(vacationDays);
+        CalculationData calculationData = new CalculationData(avgSalary, vacationDays);
         return service.calculate(calculationData);
     }
 }

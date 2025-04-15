@@ -7,6 +7,7 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import ru.gadetych.vpc.dto.ApiError;
 
 import javax.validation.ConstraintViolationException;
@@ -21,7 +22,7 @@ public class VPCHandlerController {
     private final PrintWriter pw = new PrintWriter(sw);
 
     @ExceptionHandler({ConstraintViolationException.class, MethodArgumentNotValidException.class,
-            MissingServletRequestParameterException.class, MissingServletRequestParameterException.class})
+            MissingServletRequestParameterException.class, MethodArgumentTypeMismatchException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiError handleBadRequest(RuntimeException e) {
         log.info("==> 400 {}", e.getMessage(), e);
