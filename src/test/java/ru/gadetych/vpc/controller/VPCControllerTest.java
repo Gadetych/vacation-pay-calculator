@@ -16,6 +16,8 @@ import ru.gadetych.vpc.model.CalculationData;
 import ru.gadetych.vpc.service.VPCServiceImpl;
 
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.stream.Stream;
 
 import static org.mockito.Mockito.when;
@@ -59,25 +61,52 @@ class VPCControllerTest {
                 .andExpect(jsonPath("$.amount").value(expectedAmount));
     }
 
+    @Test
+    void calculate_shouldReturnStatusOkWithDate() throws Exception {
+        double avgSalary = 30_000.0;
+        int vacationDays = 14;
+        LocalDate start = LocalDate.of(2025, 11, 1);
+        LocalDate end = LocalDate.of(2025, 11, 14);
+        CalculationData input = new CalculationData(avgSalary, vacationDays, start, end);
+
+        double expectedAmount = 14_334.470989761;
+        VacationPaymentsDto result = new VacationPaymentsDto(expectedAmount);
+
+        when(service.calculate(input)).thenReturn(result);
+
+        mockMvc.perform(setRequestHeaders(get(BASE_URL + "/calculate")
+                        .param("avgSalary", String.valueOf(avgSalary))
+                        .param("vacationDays", String.valueOf(vacationDays))
+                        .param("start", start.format(DateTimeFormatter.ofPattern(VPCController.PATTERN_DATE)))
+                        .param("end", end.format(DateTimeFormatter.ofPattern(VPCController.PATTERN_DATE)))
+                ))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.amount").value(expectedAmount));
+    }
+
     @ParameterizedTest
     @MethodSource("provideRequestParameters")
-    void calculate_shouldReturnStatusBadRequest(String avgSalary, String vacationDays) throws Exception {
+    void calculate_shouldReturnStatusBadRequest(String avgSalary, String vacationDays, String start, String end) throws Exception {
         mockMvc.perform(setRequestHeaders(get(BASE_URL + "/calculate")
                         .param("avgSalary", avgSalary)
                         .param("vacationDays", vacationDays)
+                        .param("start", start)
+                        .param("end", end)
                 ))
                 .andExpect(status().isBadRequest());
     }
 
     private static Stream<Arguments> provideRequestParameters() {
         return Stream.of(
-                Arguments.of(null, "14"),
-                Arguments.of("-100.0", "14"),
-                Arguments.of("30000.0", null),
-                Arguments.of("30000.0", "-5"),
-                Arguments.of("0.0", "14"),
-                Arguments.of("30000.0", "0"),
-                Arguments.of("30000.0", "1.4")
+                Arguments.of(null, "14", null, null),
+                Arguments.of("-100.0", "14", null, null),
+                Arguments.of("30000.0", null, null, null),
+                Arguments.of("30000.0", "-5", null, null),
+                Arguments.of("0.0", "14", null, null),
+                Arguments.of("30000.0", "0", null, null),
+                Arguments.of("30000.0", "1.4", null, null),
+                Arguments.of("30000.0", null, "2025-03-10", null),
+                Arguments.of("30000.0", null, null, "2025-03-20")
         );
     }
 }
