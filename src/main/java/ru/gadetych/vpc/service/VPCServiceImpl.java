@@ -35,12 +35,12 @@ public class VPCServiceImpl implements VPCService {
         log.debug("==> calculate: {}", calculationData);
         double amount;
         int vacationDays;
-        if (calculationData.getStart() == null || calculationData.getEnd() == null) {
+        if (calculationData.getStartDate() == null || calculationData.getEndDate() == null) {
             vacationDays = calculationData.getVacationDays();
         } else {
-            LocalDate date = calculationData.getStart();
-            LocalDate end = calculationData.getEnd();
-            vacationDays = calculateVacationDays(date, end);
+            LocalDate date = calculationData.getStartDate();
+            LocalDate endDate = calculationData.getEndDate();
+            vacationDays = calculateVacationDays(date, endDate);
         }
         amount = (calculationData.getAvgSalary() / AVERAGE_NUMBER_OF_DAYS_IN_MONTH) * vacationDays;
         VacationPayments vacationPayments = new VacationPayments(amount);
@@ -51,9 +51,9 @@ public class VPCServiceImpl implements VPCService {
         return holidays.contains(date);
     }
 
-    private int calculateVacationDays(LocalDate date, LocalDate end) {
+    private int calculateVacationDays(LocalDate date, LocalDate endDate) {
         int vacationDays = 0;
-        while (!date.isAfter(end)) {
+        while (!date.isAfter(endDate)) {
             if (!isHoliday(date)) {
                 vacationDays++;
             }

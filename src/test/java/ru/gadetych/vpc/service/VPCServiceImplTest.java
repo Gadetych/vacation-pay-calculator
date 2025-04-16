@@ -58,9 +58,9 @@ class VPCServiceImplTest {
     @Test
     void calculate_shouldHandleDate() {
         double avgSalary = 50_000.0;
-        LocalDate start = LocalDate.of(2025, 4, 7);
-        LocalDate end = LocalDate.of(2025, 4, 20);
-        CalculationData input = new CalculationData(avgSalary, null, start, end);
+        LocalDate startDate = LocalDate.of(2025, 4, 7);
+        LocalDate endDate = LocalDate.of(2025, 4, 20);
+        CalculationData input = new CalculationData(avgSalary, null, startDate, endDate);
         VacationPaymentsDto result = service.calculate(input);
 
         assertNotNull(result);
@@ -72,9 +72,9 @@ class VPCServiceImplTest {
     void calculate_shouldHandleAllData() {
         double avgSalary = 50_000.0;
         int vacationDays = 14;
-        LocalDate start = LocalDate.of(2025, 4, 7);
-        LocalDate end = LocalDate.of(2025, 4, 20);
-        CalculationData input = new CalculationData(avgSalary, vacationDays, start, end);
+        LocalDate startDate = LocalDate.of(2025, 4, 7);
+        LocalDate endDate = LocalDate.of(2025, 4, 20);
+        CalculationData input = new CalculationData(avgSalary, vacationDays, startDate, endDate);
         VacationPaymentsDto result = service.calculate(input);
 
         assertNotNull(result);
@@ -85,9 +85,9 @@ class VPCServiceImplTest {
     @Test
     void calculate_shouldHandleDateWithHoliday() {
         double avgSalary = 50_000.0;
-        LocalDate start = LocalDate.of(2025, 3, 3);
-        LocalDate end = LocalDate.of(2025, 3, 16);
-        CalculationData input = new CalculationData(avgSalary, null, start, end);
+        LocalDate startDate = LocalDate.of(2025, 3, 3);
+        LocalDate endDate = LocalDate.of(2025, 3, 16);
+        CalculationData input = new CalculationData(avgSalary, null, startDate, endDate);
         VacationPaymentsDto result = service.calculate(input);
 
         assertNotNull(result);

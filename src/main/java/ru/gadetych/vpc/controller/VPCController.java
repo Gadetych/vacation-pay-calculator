@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.gadetych.vpc.dto.VacationPaymentsDto;
-import ru.gadetych.vpc.exeption.BadRequestException;
 import ru.gadetych.vpc.exeption.IncorrectNumberOfVacationDaysException;
 import ru.gadetych.vpc.model.CalculationData;
 import ru.gadetych.vpc.service.VPCService;
@@ -35,17 +34,17 @@ public class VPCController {
                                          @RequestParam(value = "vacationDays", required = false)
                                              @Positive
                                              Integer vacationDays,
-                                         @RequestParam(value = "start", required = false)
+                                         @RequestParam(value = "startDate", required = false)
                                              @DateTimeFormat(pattern = PATTERN_DATE)
-                                             LocalDate start,
-                                         @RequestParam(value = "end", required = false)
+                                             LocalDate startDate,
+                                         @RequestParam(value = "endDate", required = false)
                                              @DateTimeFormat(pattern = PATTERN_DATE)
-                                             LocalDate end) {
-        log.info("==> calculate: avgSalary={}, vacationDays={}, start={}, end={}", avgSalary, vacationDays, start, end);
-        if ((start == null || end == null) && vacationDays == null) {
+                                             LocalDate endDate) {
+        log.info("==> calculate: avgSalary={}, vacationDays={}, startDate={}, endDate={}", avgSalary, vacationDays, startDate, endDate);
+        if ((startDate == null || endDate == null) && vacationDays == null) {
             throw new IncorrectNumberOfVacationDaysException("You must enter either the number of vacation days or the exact days you are taking leave.");
         }
-        CalculationData calculationData = new CalculationData(avgSalary, vacationDays, start, end);
+        CalculationData calculationData = new CalculationData(avgSalary, vacationDays, startDate, endDate);
         return service.calculate(calculationData);
     }
 }

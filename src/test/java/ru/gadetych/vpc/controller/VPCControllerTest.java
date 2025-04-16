@@ -65,9 +65,9 @@ class VPCControllerTest {
     void calculate_shouldReturnStatusOkWithDate() throws Exception {
         double avgSalary = 30_000.0;
         int vacationDays = 14;
-        LocalDate start = LocalDate.of(2025, 11, 1);
-        LocalDate end = LocalDate.of(2025, 11, 14);
-        CalculationData input = new CalculationData(avgSalary, vacationDays, start, end);
+        LocalDate startDate = LocalDate.of(2025, 11, 1);
+        LocalDate endDate = LocalDate.of(2025, 11, 14);
+        CalculationData input = new CalculationData(avgSalary, vacationDays, startDate, endDate);
 
         double expectedAmount = 14_334.470989761;
         VacationPaymentsDto result = new VacationPaymentsDto(expectedAmount);
@@ -77,8 +77,8 @@ class VPCControllerTest {
         mockMvc.perform(setRequestHeaders(get(BASE_URL + "/calculate")
                         .param("avgSalary", String.valueOf(avgSalary))
                         .param("vacationDays", String.valueOf(vacationDays))
-                        .param("start", start.format(DateTimeFormatter.ofPattern(VPCController.PATTERN_DATE)))
-                        .param("end", end.format(DateTimeFormatter.ofPattern(VPCController.PATTERN_DATE)))
+                        .param("startDate", startDate.format(DateTimeFormatter.ofPattern(VPCController.PATTERN_DATE)))
+                        .param("endDate", endDate.format(DateTimeFormatter.ofPattern(VPCController.PATTERN_DATE)))
                 ))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.amount").value(expectedAmount));
@@ -86,12 +86,12 @@ class VPCControllerTest {
 
     @ParameterizedTest
     @MethodSource("provideRequestParameters")
-    void calculate_shouldReturnStatusBadRequest(String avgSalary, String vacationDays, String start, String end) throws Exception {
+    void calculate_shouldReturnStatusBadRequest(String avgSalary, String vacationDays, String startDate, String endDate) throws Exception {
         mockMvc.perform(setRequestHeaders(get(BASE_URL + "/calculate")
                         .param("avgSalary", avgSalary)
                         .param("vacationDays", vacationDays)
-                        .param("start", start)
-                        .param("end", end)
+                        .param("startDate", startDate)
+                        .param("endDate", endDate)
                 ))
                 .andExpect(status().isBadRequest());
     }

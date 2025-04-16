@@ -16,8 +16,8 @@ import java.time.LocalDate;
 public class CalculationData {
     private Double avgSalary;
     private Integer vacationDays;
-    private LocalDate start;
-    private LocalDate end;
+    private LocalDate startDate;
+    private LocalDate endDate;
 
     public CalculationData(Double avgSalary, Integer vacationDays) {
         this.avgSalary = avgSalary;
